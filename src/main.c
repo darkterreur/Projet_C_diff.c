@@ -11,8 +11,8 @@ int main ( int argc, char** argv ) {
     int targ = 0;
     
 	int parametre;
-    
-    
+
+//J'aime les naine avec plein de poils    
     
 	if (2 > argc) {
         printf("Nombre de parametres insuffisants\n");
