@@ -1,9 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "diff.h"
+/////----------------------------------------------------------------------------/////
+//Modification Gael
+/////----------------------------------------------------------------------------/////
 
 
 
+char allOption(TableauOption,nbOption,tableauFichierOuvert,nbTarget) {
+	int i,j = 0;
+	//on parcour le tableau de paramettre et on appel la fonction qui en découle et on lui envoi le tableau de fichier avec l'indice d'element et on applique a chaque fichier les modif demander
+	for(;i<nbOption;i++) {
+		switch() {
+			case '-q' :
+				break;
+
+
+
+
+
+
+
+
+
+
+
+
+		}
+	}
+
+//ensuite nous ferons les comparaison de fichier une fois que tout les maj ou espace ou autres soient enlevé
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/////----------------------------------------------------------------------------/////
+//Code de egor qui ne prend que un parametre dans un seul ordre on ne va pas recuperer
+/////----------------------------------------------------------------------------/////
 void diff(char * parametre) {
 	printf("Salut %s\n", parametre);
 	

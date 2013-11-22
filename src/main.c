@@ -20,7 +20,7 @@ int main ( int argc, char** argv ) {
         return 1;
     }else{
         //je boucle pour compter le nombre d'élément de chaque
-        for(j = 1; j <= argc; j++) {
+        for(j = 1; j < argc; j++) {
             if(argv[j][0] == '-') {
                 nbOption ++;
             }else{
@@ -67,10 +67,12 @@ int main ( int argc, char** argv ) {
                     
                     
             
-            
+
             for(i=0; i<=nbTarget;i++) {
-				fclose(fichier[i]);
-            }
+               if (fichier[i] != NULL) {
+                   fclose(fichier[i]);
+               }
+           }
     
         }else{
             printf("Parametres incorrect\n");
