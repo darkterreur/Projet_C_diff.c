@@ -14,7 +14,8 @@
 // Taille maximal du buffer
 #define MAX_BUFFER 1000
 
-
+#define tempFichier0 = './temporaire/temp_0';
+#define tempFichier1 = './temporaire/temp_1';
 
 void diff(char * parametre);
 

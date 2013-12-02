@@ -6,37 +6,124 @@
 /////----------------------------------------------------------------------------/////
 
 
-
-char allOption(TableauOption,nbOption,tableauFichierOuvert,nbTarget) {
-	int i,j = 0;
+/*
+char allOption(char TableauOption,int nbOption,char tableauFichierOuvert,int nbTarget) {
+	int i,j,k = 0;
+	char ligne = '\0';
+	char route = '\0';
 	//on parcour le tableau de paramettre et on appel la fonction qui en découle et on lui envoi le tableau de fichier avec l'indice d'element et on applique a chaque fichier les modif demander
-	for(;i<nbOption;i++) {
-		switch() {
-			case '-q' :
-				break;
+	
 
-
-
-
-
-
-
-
-
-
-
-
-		}
-	}
+	//for(;i<nbOption;i++) {
+		
+		//switch(TableauOption[i]) {
+		//	case '-b' :
+		//		for(;j<nbTarget;j++){
+		//			route = tableauFichierOuvert[i]	
+//
+//					while(fgets(ligne, TAILLE_MAX, tableauFichierOuvert[j]) != NULL ) {
+//						for(;k<nombreCharacteChaine(ligne);k++){
+//
+//						}
+//					}
+//				}
+//				break;
+//		}
+	//}
 
 //ensuite nous ferons les comparaison de fichier une fois que tout les maj ou espace ou autres soient enlevé
 
 
 
+}*/
 
 
+char father_copy(char **tableauFichierOuvert, int nbTarget){
+	char extend[5];
+	int	j,i=0;
 
+	for(j=0;j<nbTarget;j++){
+		
+		*extend = getExtension(&tableauFichierOuvert[j]);
+		i++;
+	}
+	
 }
+
+char* getExtension(char *target){
+
+
+	/////////////////////////////////////////
+	int i = 0;
+	int k = 0 ;
+	char extension[5];
+
+	k = nombreCharacteChaine(&target);
+
+	while(k>0 || target[k] == '.'){
+		extension[i]= target[k];
+
+		i++;
+		k--;
+	}
+	return &extension;
+}
+
+
+int copier_fichier(char const * const source, char const * const destination)
+{
+    FILE* fSrc;
+    FILE* fDest;
+    char buffer[512];
+    int NbLus;
+ 
+    if ((fSrc = fopen(source, "rb")) == NULL)
+    {
+        return 1;
+    }
+ 
+    if ((fDest = fopen(destination, "wb")) == NULL)
+    {
+        fclose(fSrc);
+        return 2;
+    }
+ 
+    while ((NbLus = fread(buffer, 1, 512, fSrc)) != 0)
+        fwrite(buffer, 1, NbLus, fDest);
+ 
+    fclose(fDest);
+    fclose(fSrc);
+ 
+    return 0;
+}
+
+
+
+
+
+
+
+//Fonction qui compte le nombres de charactere dans une chaine on rajoute +1 pour le /0
+int nombreCharacteChaine(char maChaine){
+	int nb = strlen(maChaine);
+	return nb+1;
+}
+
+//Fonction qui compte le nombres de lignes d'un fichier
+int nb_lignes(FILE * f) {
+	int car;
+	int i=1;
+	do {
+		car = fgetc(f);
+		if (car == LF) {
+			i++;
+		}
+	} while (car != EOF);
+	
+	return i;
+}
+
+
 
 
 
@@ -72,8 +159,6 @@ void normal(FILE * f1, FILE * f2) {
 		
 	} while (car2fich1 != EOF || car2fich2 != EOF);
 }
-
-
 
 /**
 	-q, --brief
@@ -113,24 +198,6 @@ int taille_fichier(FILE * f) {
 	return i;
 }
 
-
-/**
-	Fonction qui compte le nombres de lignes d'un fichier
-*/
-int nb_lignes(FILE * f) {
-	int car;
-	int i=1;
-	do {
-		car = fgetc(f);
-		if (car == LF) {
-			i++;
-		}
-	} while (car != EOF);
-	
-	return i;
-}
-
-
 /**
 	Lit le fichier ligne par ligne
 	int index - lit la ligne indiquée
@@ -165,9 +232,3 @@ char * fgetl(FILE * f, int index, int taille_max) {
 	ligne[i] = '\0';
 	return ligne;
 }
-
-
-
-
-
-
