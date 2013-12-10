@@ -5,30 +5,30 @@
 
 int main ( int argc, char** argv ) {
 	int i;
-    int j;
-    int k;
-    int nbOption = 0;
-    int nbTarget = 0;
-    int opti = 0;
-    int targ = 0;
-    
+	int j;
+    	int nbOption_basique = 0;
+ 	int nbOption_complexe =0;
+	int cpt=1; 
+	int nbOption=0;	
+    	int nbTarget = 0;
+    	int opti = 0;
+    	int targ = 0;
 	int parametre;
-
-//J'aime les naine avec plein de poils    
+	int k;   
     
 	if (2 > argc) {
         printf("Nombre de parametres insuffisants\n");
         return 1;
-    }else{
+	}else{
         //je boucle pour compter le nombre d'élément de chaque
-        for(j = 1; j < argc; j++) {
+         for(j = 1; j < argc; j++) {
             if(argv[j][0] == '-') {
                 if(argv[j][1] == '-'){
                 	//il s'agit d'un grand argument
                 	nbOption ++;
                 }else if(nombreCharacteChaine(argv[j]) > 2){
                 	//il nous faut eclater le nombre
-                	nbOption += (nombreCharacteChaine(argv[j])-1);
+                	nbOption += (nombreCharacteChaine(argv[j]));
                 }else{
                 	//il s'agit d'un argument normal
                 	nbOption ++;
@@ -37,17 +37,22 @@ int main ( int argc, char** argv ) {
                 nbTarget ++;
             }
         }
+}
+	nbOption+=3; // car -a retourne un caractere et non deux
+	printf("nbOption:%i\n ",nbOption); // affichage pour tester
         // si j'ai bien 1 option et deux adresses minimum c'est bon
-        if(nbOption > 0 && nbTarget == 2) 
-        {
-            char* target[nbTarget];
-            char* option[nbOption];
-            FILE *fichier[nbTarget];
+     //   if(nbOption > 0 && nbTarget == 2) {
             
-
-
+            char *target[nbTarget];
+            char *optionComplex[nbOption];
+            char option_basiq[nbOption];
+            FILE *fichier[nbTarget];
+            int optiCompl=0;
+	    opti =0 ;
+	    
             //j'isole les adresses dans un tableau et les option dans un autre
-            for(j = 1; j <= argc; j++) {
+            for(j = 1; j < argc; j++) {
+	        //opti =0;
                 if(argv[j][0] == '-') {
                     if(argv[j][1] == '-'){
                     	//on recupere l'argument a therme on fera appel au fichier je pense
@@ -55,7 +60,7 @@ int main ( int argc, char** argv ) {
                     	//option[opti] = argv[j][2];
                     	//opti ++;
 
-                    	optionComplex[optiCompl] = &argv[j][2];
+                   	optionComplex[optiCompl] = &argv[j];
                     	optiCompl ++;
 
 
@@ -63,13 +68,13 @@ int main ( int argc, char** argv ) {
                     	//on a plus d'un parametre
                     	//le - est enlevé par k=1 et non 0
                     	for(k=1;k<=nombreCharacteChaine(argv[j]);k++){
-                    		option[opti] = argv[j][k];
+                    		option_basiq[opti] = argv[j][k];
                     		opti ++;
                     	}
                     }else{
                     	//parametre normal
                     	// on enleve le -
-                    	option[opti] = argv[j][1];
+                    	option_basiq[opti] = argv[j][1];
                     	opti ++;	
                     }
                     
@@ -79,8 +84,11 @@ int main ( int argc, char** argv ) {
                     targ ++;
                 }
             }
-
-            
+	//j=0;
+	//while(optionComplex[j]!='\0')
+        printf("option %s\n",*optionComplex);         
+	//father_copy(target,nbTarget);
+//}
             //j'ouvre une bonne fois pour toutes les deux fichier en cas d'erreur c'est qu'il n'existent pas
             for(i=0; i<=nbTarget;i++) {
             	if(fopen(target[i], "r+") != NULL) {
@@ -94,99 +102,22 @@ int main ( int argc, char** argv ) {
             //on enverra juste le pointeur des fichier ouvert plus besoin de les ouvrire ou de faire des test
             //on attend la retour de lionel sur ce qui est attendu quand on rentre plusieur option
 
+          diffNormal(fichier[0], fichier[1]);
 
-            
 
-            for(i=0; i<=nbTarget;i++) {
+
+	 for(i=0; i<=nbTarget;i++) {
                if (fichier[i] != NULL) {
                    fclose(fichier[i]);
                }
-           }
+           
     
-        }
-        else{
-            printf("Parametres incorrect\n");
-            return 1;
-        }
-    }
-	
-    
-    
-//------------------------------------séparation code egor -----------------------------------------
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    
-    
-	
-	// Parcours des paramètres
-	for (i=1; i<argc; i++) {
-		// Si la première lettre d'un paramètre est égale à un tiret
-		if ( argv[1][0] == TIRET ) {
-			parametre = argv[1][1];
-		} else {
-			// Sinon on est en fonctionnement en mode normal
-			parametre = 0;
-		}
-	}
-	
-	
-	
-	switch(parametre) {
-		case q :
-			// Ouverture du fichier numero 1
-			fichier1 = fopen(argv[2], "r+");
-			if (fichier1==NULL) { printf("Impossible d'ouvrir le fichier %s\n", argv[1] ); 
-								 return 1; }
-					
-			// Ouverture du fichier numero 2
-			fichier2 = fopen(argv[3], "r+");
-			if (fichier2==NULL) { printf("Impossible d'ouvrir le fichier %s\n", argv[2] );
-								 return 1; }
-								 
-			
-			if (brief(fichier1, fichier2) == 0) {
-				printf("Les fichiers %s et %s sont différents", argv[2], argv[3]);
-			} else {
-				printf("les fichiers sont egaux");
-			}
-			break;
-		case 0 : // --normal	Fonctionnement en mode normal
-			// Ouverture du fichier numero 1
-			fichier1 = fopen(argv[1], "r+");
-			if (fichier1==NULL) { printf("Impossible d'ouvrir le fichier %s\n", argv[1] ); 
-								 return 1; }
-					
-			// Ouverture du fichier numero 2
-			fichier2 = fopen(argv[2], "r+");
-			if (fichier2==NULL) { printf("Impossible d'ouvrir le fichier %s\n", argv[2] );
-								 return 1; }
-			
-			break;
-		case 108 : // l
-			// Ouverture du fichier numero 1
-			fichier1 = fopen(argv[2], "r+");
-			if (fichier1==NULL) { printf("Impossible d'ouvrir le fichier %s\n", argv[1] ); 
-								 return 1; }
-			char * ligne = malloc(sizeof(char) * MAX_BUFFER);
-			ligne = fgetl(fichier1, 2, MAX_BUFFER);
-			printf("%s", ligne);
-			break;
-	}
-	
-	
-	
-	fclose(fichier1);
-	fclose(fichier2);
-	
-	*/
+        	else{
+           	 printf("Parametres incorrect\n");
+            	return 1;
+        	}
+    	}
+
 	
 	return 0;
 }
