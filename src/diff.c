@@ -1,112 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "diff.h"
-/////----------------------------------------------------------------------------/////
-//Modification Gael
-/////----------------------------------------------------------------------------/////
-
-
-/*
-char allOption(char TableauOption,int nbOption,char tableauFichierOuvert,int nbTarget) {
-	int i,j,k = 0;
-	char ligne = '\0';
-	char route = '\0';
-	//on parcour le tableau de paramettre et on appel la fonction qui en découle et on lui envoi le tableau de fichier avec l'indice d'element et on applique a chaque fichier les modif demander
-	
-
-	//for(;i<nbOption;i++) {
-		
-		//switch(TableauOption[i]) {
-		//	case '-b' :
-		//		for(;j<nbTarget;j++){
-		//			route = tableauFichierOuvert[i]	
-//
-//					while(fgets(ligne, TAILLE_MAX, tableauFichierOuvert[j]) != NULL ) {
-//						for(;k<nombreCharacteChaine(ligne);k++){
-//
-//						}
-//					}
-//				}
-//				break;
-//		}
-	//}
-
-//ensuite nous ferons les comparaison de fichier une fois que tout les maj ou espace ou autres soient enlevé
-
-
-
-}*/
-
-
-char father_copy(char **tableauFichierOuvert, int nbTarget){
-	char extend[5];
-	int	j,i=0;
-
-	for(j=0;j<nbTarget;j++){
-		
-		*extend = getExtension(&tableauFichierOuvert[j]);
-		i++;
-	}
-	
-}
-
-char* getExtension(char *target){
-
-
-	/////////////////////////////////////////
-	int i = 0;
-	int k = 0 ;
-	char extension[5];
-
-	k = nombreCharacteChaine(&target);
-
-	while(k>0 || target[k] == '.'){
-		extension[i]= target[k];
-
-		i++;
-		k--;
-	}
-	return &extension;
-}
-
-
-int copier_fichier(char const * const source, char const * const destination)
-{
-    FILE* fSrc;
-    FILE* fDest;
-    char buffer[512];
-    int NbLus;
- 
-    if ((fSrc = fopen(source, "rb")) == NULL)
-    {
-        return 1;
-    }
- 
-    if ((fDest = fopen(destination, "wb")) == NULL)
-    {
-        fclose(fSrc);
-        return 2;
-    }
- 
-    while ((NbLus = fread(buffer, 1, 512, fSrc)) != 0)
-        fwrite(buffer, 1, NbLus, fDest);
- 
-    fclose(fDest);
-    fclose(fSrc);
- 
-    return 0;
-}
-
-
-
-
-
 
 
 //Fonction qui compte le nombres de charactere dans une chaine on rajoute +1 pour le /0
-int nombreCharacteChaine(char maChaine){
+/*int nombreCharacteChaine(char *maChaine){
 	int nb = strlen(maChaine);
 	return nb+1;
+}*/
+int nombreCharacteChaine(char *str) {
+
+    int size = 0;
+    while (*str != '\0') 
+    {
+        str++;
+        size++;
+    }
+    return size;
 }
 
 //Fonction qui compte le nombres de lignes d'un fichier
@@ -118,81 +28,6 @@ int nb_lignes(FILE * f) {
 		if (car == LF) {
 			i++;
 		}
-	} while (car != EOF);
-	
-	return i;
-}
-
-
-
-
-
-
-
-
-
-
-
-/////----------------------------------------------------------------------------/////
-//Code de egor qui ne prend que un parametre dans un seul ordre on ne va pas recuperer
-/////----------------------------------------------------------------------------/////
-void diff(char * parametre) {
-	printf("Salut %s\n", parametre);
-	
-}
-/**
-	--normal                  Produire un « diff » en format normal (par défaut)
-*/
-void normal(FILE * f1, FILE * f2) {
-	int car2fich1;
-	int car2fich2;
-	int ligne=0;
-	// Boucle de parcour des fichiers
-	do {
-		car2fich1 = fgetc(f1);
-		car2fich2 = fgetc(f2);
-		// Si les deux caractere sont diferrent
-		if (car2fich1 != car2fich2) {
-			//flag=0;
-		}
-		printf("c1=%i \t c1=%i \t c2=%i \t c2=%c\n", car2fich1, car2fich1, car2fich2, car2fich2);
-		
-	} while (car2fich1 != EOF || car2fich2 != EOF);
-}
-
-/**
-	-q, --brief
-		Indiquer seulement si les fichiers diffèrent
-		return 0 s'ils sont different et 1 s'ils sont égaux
-*/
-int brief(FILE * f1, FILE * f2) {
-	int car2fich1;
-	int car2fich2;
-	int flag=1;
-	int ligne=0;
-	// Boucle de comparaison
-	do {
-		car2fich1 = fgetc(f1);
-		car2fich2 = fgetc(f2);
-		// Si les deux caractere sont diferrent
-		if (car2fich1 != car2fich2) {
-			flag=0;
-		}
-		printf("car2fich1=%i \t\t car2fich1=%i\n", car2fich1, car2fich2);
-		
-	} while (car2fich1 != EOF || car2fich2 != EOF);
-	
-	return flag;
-}
-/**
-	Fonction qui compte la taille du fichier
-*/
-int taille_fichier(FILE * f) {
-	int car;
-	int i=0;
-	do {
-		car = fgetc(f);
-		i++;
 	} while (car != EOF);
 	
 	return i;
@@ -232,3 +67,134 @@ char * fgetl(FILE * f, int index, int taille_max) {
 	ligne[i] = '\0';
 	return ligne;
 }
+
+char * diffNormal(FILE * f1, FILE * f2) {
+	
+
+	int i=1;int nbligne=0;int cpt_l1=0;int cpt_l2=0;int j=0;int comp=0;int k=0;int dernier_l_trouve=0;int nb_erreur=0;int trouve;
+	char chaine;char chaine2;
+	int resultat;
+	cpt_l1 = nb_lignes(f1);
+	cpt_l2 = nb_lignes(f2);
+	if(cpt_l1<cpt_l2) comp=cpt_l2;
+	else comp = cpt_l1;
+	char delate[comp];
+	char add[comp];
+	char change[comp];
+	char *temp[comp][4];
+	
+	char ligneCourante1[cpt_l1];
+	char ligneCourante2[cpt_l2]; 
+	int l =0;
+    	//on boucle sur tout le fichier 2
+  	for(i;i<cpt_l2;i++){
+       	trouve = 0;
+       	ligneCourante2[i] = fgetl(f2,i,MAX_BUFFER); //on obtient la ligne de l'indice I
+       	j=dernier_l_trouve+1;
+       	while (j<cpt_l1 && trouve==0){
+           	ligneCourante1[j] = fgetl(f1,j,MAX_BUFFER); //on obtient la ligne de l'indice J
+           	//on compare les deux string, renvoi un entier
+          	resultat = strcmp( ligneCourante1[j], ligneCourante2[i]);
+           
+           	//en fonction du resultat si différent noter les indices dans des tableaus Ajout[] Suppression[]
+       		if (resultat != 0){
+                              
+				// printf ("%s  est donc inferieure a %s\n", s1, s2); // qui est inférieur ?
+           	}else if (resultat == 0){
+              	if(j != i){
+					temp[nb_erreur][0] = 'd'; 
+					printf("%c",temp[nb_erreur][0]);
+					temp[nb_erreur][1] =dernier_l_trouve;
+					printf("%i",temp[nb_erreur][1]);
+					temp[nb_erreur][2] = j;
+					printf("%i",temp[nb_erreur][2]);
+					temp[nb_erreur][3] = i;
+					printf("%i",temp[nb_erreur][3]);
+					printf("\n");
+					dernier_l_trouve = j;
+					nb_erreur++;
+		      	}
+			
+				// printf ("%s est donc égale a %s\n", s1, s2); // c'est egal on met trouve a 1
+               	trouve = 1;
+			}else{
+                             //  printf ("%s est donc supérieure a %s\n", s1, s2); //qui est supérieur ?
+          	}
+
+           	j++;
+       	}
+		if(j==cpt_l1 && i!=cpt_l2){
+			
+			temp[nb_erreur][0] = 'a'; 
+			printf("%c",temp[nb_erreur][0]);
+			temp[nb_erreur][1] =dernier_l_trouve;
+			printf("%i",temp[nb_erreur][1]);
+			temp[nb_erreur][2] = 0;
+			printf("%i",temp[nb_erreur][2]);
+			temp[nb_erreur][3] = i;
+			printf("%i",temp[nb_erreur][3]);
+			printf("\n");
+							
+			nb_erreur++;
+			dernier_l_trouve--;
+		}
+    }
+	return temp;
+}
+
+
+//////////////////////////////////// 
+//On garde mais pour le moment on ne s'en sert pas
+
+/*
+void father_copy(char **tableauFichierOuvert, int nbTarget){
+	char extend[2][5];
+	int x,j,i=0,length=0,flag=1;
+	for(j=0;j<nbTarget;j++){
+		length=nombreCharacteChaine(tableauFichierOuvert[j]);
+		//while(tableauFichierOuvert[j][length]!='.'){
+		x=length;
+		flag=1;
+		i=0;
+		while(flag != 0){
+			if(tableauFichierOuvert[j][length]=='.'|| flag == 2){
+				flag =2; 
+				length++;
+				extend[j][i] = tableauFichierOuvert[j][length];
+				printf("%c",extend[j][i]);
+				i++;
+				if(length==x) flag=0;
+				
+			}else{
+				if(length==0) {
+					flag=0;
+				}
+			 	length--;
+
+			}
+		}
+//
+	printf("\n");	
+	}
+}
+
+char *getExtension(char *target){
+
+
+	/////////////////////////////////////////
+	int i = 0;
+	int k = 0 ;
+	char extension[10];
+
+	k = nombreCharacteChaine(*target);
+
+	while(k>0 || target[k] == '.'){
+		//extension[i]= target[k];
+		
+		printf("%c",target[i]);
+		i++;
+		k--;
+	}
+	return extension;
+}
+*/

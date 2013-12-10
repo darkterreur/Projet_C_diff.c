@@ -14,11 +14,21 @@
 // Taille maximal du buffer
 #define MAX_BUFFER 1000
 
-#define tempFichier0 = './temporaire/temp_0';
-#define tempFichier1 = './temporaire/temp_1';
+//const char *tempFichier0 = "./temporaire/temp_0";
+//const char (*tempFichier1)[20] = './temporaire/temp_1';
+//#define (*tempFichier1)  './temporaire/temp_1'
+//tempFichier1 =malloc( sizeof(char)*(20 );
+
+
+
 
 void diff(char * parametre);
-
+void father_copy(char **tableauFichierOuvert, int nbTarget);
+char *getExtension(char *target);
+int copier_fichier(char const * const source, char const * const destination);
+int nombreCharacteChaine(char *maChaine);
+void diff(char * parametre);
+char * diffNormal(FILE * f1, FILE * f2);
 
 /**
 	-q, --brief
@@ -48,7 +58,7 @@ int nb_lignes(FILE * f);
 	int index - lit la ligne indiquée
 				0 si on veux lire tous les lignes
 */
-char * fgetl(FILE * f, int index, int taille_max);
+char *fgetl(FILE *f, int index, int taille_max);
 
 
 #endif

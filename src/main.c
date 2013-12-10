@@ -6,6 +6,7 @@
 int main ( int argc, char** argv ) {
 	int i;
     int j;
+    int k;
     int nbOption = 0;
     int nbTarget = 0;
     int opti = 0;
@@ -22,29 +23,63 @@ int main ( int argc, char** argv ) {
         //je boucle pour compter le nombre d'élément de chaque
         for(j = 1; j < argc; j++) {
             if(argv[j][0] == '-') {
-                nbOption ++;
+                if(argv[j][1] == '-'){
+                	//il s'agit d'un grand argument
+                	nbOption ++;
+                }else if(nombreCharacteChaine(argv[j]) > 2){
+                	//il nous faut eclater le nombre
+                	nbOption += (nombreCharacteChaine(argv[j])-1);
+                }else{
+                	//il s'agit d'un argument normal
+                	nbOption ++;
+                }
             }else{
                 nbTarget ++;
             }
         }
         // si j'ai bien 1 option et deux adresses minimum c'est bon
-        if(nbOption > 0 && nbTarget == 2) {
-            
+        if(nbOption > 0 && nbTarget == 2) 
+        {
             char* target[nbTarget];
             char* option[nbOption];
             FILE *fichier[nbTarget];
             
+
+
             //j'isole les adresses dans un tableau et les option dans un autre
             for(j = 1; j <= argc; j++) {
                 if(argv[j][0] == '-') {
-                    option[opti] = argv[j];
-                    opti ++;
+                    if(argv[j][1] == '-'){
+                    	//on recupere l'argument a therme on fera appel au fichier je pense
+                    	//on fait sauter les deux --
+                    	//option[opti] = argv[j][2];
+                    	//opti ++;
+
+                    	optionComplex[optiCompl] = &argv[j][2];
+                    	optiCompl ++;
+
+
+                    }else if(nombreCharacteChaine(argv[j]) > 2){
+                    	//on a plus d'un parametre
+                    	//le - est enlevé par k=1 et non 0
+                    	for(k=1;k<=nombreCharacteChaine(argv[j]);k++){
+                    		option[opti] = argv[j][k];
+                    		opti ++;
+                    	}
+                    }else{
+                    	//parametre normal
+                    	// on enleve le -
+                    	option[opti] = argv[j][1];
+                    	opti ++;	
+                    }
+                    
                     
                 }else{
                     target[targ] = argv[j];
                     targ ++;
                 }
             }
+
             
             //j'ouvre une bonne fois pour toutes les deux fichier en cas d'erreur c'est qu'il n'existent pas
             for(i=0; i<=nbTarget;i++) {
@@ -60,12 +95,6 @@ int main ( int argc, char** argv ) {
             //on attend la retour de lionel sur ce qui est attendu quand on rentre plusieur option
 
 
-                    
-                    
-                    
-                    
-                    
-                    
             
 
             for(i=0; i<=nbTarget;i++) {
@@ -74,18 +103,13 @@ int main ( int argc, char** argv ) {
                }
            }
     
-        }else{
+        }
+        else{
             printf("Parametres incorrect\n");
             return 1;
         }
     }
 	
-    
-    
-    
-    
-    
-    
     
     
 //------------------------------------séparation code egor -----------------------------------------
